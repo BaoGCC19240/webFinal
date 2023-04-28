@@ -7,7 +7,7 @@
 }
 
 body {
-  background: linear-gradient(45deg,#d7eee2 ,#8ce2f1);
+  /*background: linear-gradient(45deg,#d7eee2 ,#8ce2f1);*/
   background-repeat:no-repeat;
   background-size:auto;
 }
@@ -15,7 +15,7 @@ body {
   position: absolute;
   top: 100%;
   z-index: 1;
-  background: linear-gradient(90deg, #cac2c5, #86cfdc);
+  background: #61caf3;
   border: 1px solid #ccc;
   min-width: 100px;
   font-weight: 550;
@@ -44,7 +44,7 @@ body {
 }
 
 #product-list ul li a:hover {
-  background-color: #f5f5f5;
+  background-color: #3281b1;
   border-radius: 10px;
   height: auto;
 }
@@ -58,7 +58,7 @@ header {
     top: 0;
     left: 0;
     z-index: 999;
-    background-color: #00B2BF;
+    background-color: #61caf3;
     height: 80px;
     justify-content: space-between;
 }
@@ -97,7 +97,7 @@ header {
     list-style: none;
     text-decoration: none;
     font-weight: 900;
-    color: black;
+    color: white;
     font-size: 20px;
 }
 
@@ -265,20 +265,19 @@ header {
 }
 .banner {
   z-index: 2;
-  width: 70%;
-  height: 40vw;
+  width: 95%;
+  height: 50vw;
   display: inline-flex;
   overflow: hidden;
-  margin-left: 15%;
+  margin-left: 2.5%;
   margin-top: 5px;
-  border-radius: 5%;
   
 }
 .banner img{
   width: 100%;
   height: calc(90vw/1.75);
   object-fit:cover;
-  animation: slider 5s alternate infinite;
+  animation: slider 20s alternate infinite;
 }
 
 @keyframes slider{
@@ -306,7 +305,7 @@ header {
   width: 300px;
   margin-top: 50%;
   left: 50%;
-  background-color: #8ccdd9;
+  background-color: #d7f6ff;
   transform: translate(-50%, 0%);
   padding: 20px;
   margin-top: 50px;
@@ -340,7 +339,7 @@ header {
     background: transparent;
     outline: none;
     height: 40px;
-    color: #fff;
+    color: #000000;
     font-size: 16px;
   }
   
@@ -348,7 +347,7 @@ header {
     border: none;
     outline: none;
     height: 40px;
-    background: #07c310;
+    background: #00a4e0ba;
     color: #fff;
     font-size: 18px;
     border-radius: 20px;
@@ -356,18 +355,18 @@ header {
   
   #login-box input[type="submit"]:hover {
     cursor: pointer;
-    background: #309621;
+    background: #00a4e0ba;
     color: #000;
   }
   
   #login-box a {
     text-decoration: none;
     font-size: 14px;
-    color: #fff;
+    color: #454c98;
   }
   
   #login-box a:hover {
-    color: #3c3308;
+    color: black;
   }
 
     #signup-form {
@@ -376,7 +375,7 @@ header {
       left: 50%;
       transform: translate(-50%, 0%);
       width: 350px;
-      background-color: #8ccdd9;
+      background-color: #d7f6ff;
       padding: 20px;
       border: 2px solid #cccccc;
       border-radius: 10px;
@@ -412,7 +411,7 @@ header {
       background: transparent;
       outline: none;
       height: 40px;
-      color: #fff;
+      color: black;
       font-size: 16px;
     }
     
@@ -420,7 +419,7 @@ header {
       border: none;
       outline: none;
       height: 40px;
-      background: #07c310;
+      background: #00a4e0ba;
       color: #fff;
       font-size: 18px;
       border-radius: 20px;
@@ -428,7 +427,7 @@ header {
     
     #signup-form input[type="submit"]:hover {
       cursor: pointer;
-      background: #309621;
+      background: #22abdcba;
       color: #000;
     }
     
@@ -443,7 +442,8 @@ header {
     }
 /* footer design*/
 footer {
-  background-color: #00B2BF;
+  background-color: #61caf3;
+  color: white;
   padding-bottom: 0;
 }
 
@@ -479,7 +479,7 @@ footer {
 
 .footer-section a {
   text-decoration: none;
-  color: #666;
+  color: white;
 }
 
 .footer-section a:hover {
@@ -526,7 +526,7 @@ footer {
 
 .products li {
     /*width: clamp(500px, space-evenly, 30%);*/
-    width: calc(30% - 50px);
+    width: 20%;
     margin-bottom: 30px;
     padding: 20px;
     background-color: #f5f5f5;
@@ -562,7 +562,8 @@ footer {
   width: 120px;
   display: inline-block;
   padding: 10px;
-  background:linear-gradient(45deg,rgb(77, 172, 186),rgb(90, 193, 186));
+  background: linear-gradient(45deg,rgb(92 193 235),rgb(73 207 224));
+
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
@@ -589,7 +590,7 @@ footer {
   }
   
   .products img {
-    height: 200px;
+    height: 250px;
     margin-bottom: 10px;
   }
   
@@ -786,7 +787,7 @@ footer {
     }
     
     th {
-      background-color: #f5f5f5;
+      background-color: #61caf3;
     }
     
     td img {
@@ -887,7 +888,7 @@ footer {
     .search-container input[type=text] {
       padding: 10px;
       margin-right: 5px;
-      border: none;
+      border: 1px solid black;
       font-size: 15px;
       width: 50%;
       border-radius:5px ;
@@ -913,15 +914,13 @@ footer {
       color:darkgrey
     }
     .filter {
-      width: 92%;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       padding: 10px;
-      background-color: #f2f2f2;
+      background-color: #6eb9ee;
       border: 1px solid #ccc;
-      border-radius: 10px;
       gap:10px;
 
     }
@@ -934,11 +933,10 @@ footer {
     
     .filter-btn {
       padding: 10px 20px;
-      border-radius: 20px;
       background-color: #fff;
       border: 1px solid #ccc;
       font-size: 14px;
-      color: #666;
+      color: black;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -999,7 +997,6 @@ footer {
       padding: 20px;
       width: 25%;
       background-color: #ebf3fb;
-      border-radius: 10px;
     }
     .pay_Method label {
       display: block;

@@ -157,11 +157,19 @@ document.addEventListener("click", function (event) {
   }
 });
 
-function deleteConfirm(){
-    if(confirm("Are you sure to delete!")){
-        return true;
+function deleteConfirm(link) {
+  Swal.fire({
+    title: 'Are you sure you want to delete?',
+    text: "Data will not be recoverable after deletion!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, I am sure!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = link.href;
     }
-    else{
-        return false;
-    }
+  })
 }

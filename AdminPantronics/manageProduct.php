@@ -29,6 +29,7 @@
       <th>Price</th>
       <th>Quantity</th>
       <th>Category ID</th>
+      <th>Supplier ID</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -44,25 +45,26 @@ $result = $stmt->get_result();
 // Kiểm tra kết quả
 if ($result->num_rows > 0) {
     // Hiển thị dữ liệu
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["price"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["quantity"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["category_id"]) . "</td>";
-        echo "<td>";
-        echo "<a href='?mpage=updateProduct&amp;id=" . htmlspecialchars($row["id"]) . "'>Edit</a>";
-        echo " | ";
-        echo "<a href='?mpage=manageProduct&amp;function=del&amp;id=" . htmlspecialchars($row["id"]) . "' onclick='return deleteConfirm()'>Delete</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='8'>Not added</td></tr>";
-}
-?>
+    while($row = $result->fetch_assoc()) { ?>
+      <tr>
+          <td><?php echo htmlspecialchars($row["id"]); ?></td>
+          <td><?php echo htmlspecialchars($row["name"]); ?></td>
+          <td><?php echo htmlspecialchars($row["description"]); ?></td>
+          <td><?php echo htmlspecialchars($row["price"]); ?></td>
+          <td><?php echo htmlspecialchars($row["quantity"]); ?></td>
+          <td><?php echo htmlspecialchars($row["category_id"]); ?></td>
+          <td><?php echo htmlspecialchars($row["supplier_id"]); ?></td>
+          <td>
+              <a href="?mpage=updateProduct&amp;id=<?php echo htmlspecialchars($row["id"]); ?>">Update</a>
+              |
+              <a href="?mpage=manageProduct&amp;function=del&amp;id=<?php echo htmlspecialchars($row["id"]); ?>" onclick="event.preventDefault(); deleteConfirm(this)">Delete</a>
+          </td>
+      </tr>
+  <?php }
+} else { ?>
+  <tr><td colspan="8">Not added</td></tr>
+<?php } ?>
+
 
   </tbody>
 </table>
@@ -70,8 +72,9 @@ if ($result->num_rows > 0) {
   include_once("connection.php");
   if(isset($_GET["function"])=="del"){
     if(isset($_GET['id'])){
-      $id=mysqli_real_escape_string($conn, $_GET["id"]);
 
+
+      $id= $_GET["id"];
       // Kiểm tra xem category này có sản phẩm nào không
       $sql_check_invoice = "SELECT * FROM invoicedetail WHERE product_id = '$id'";
       $sql_check_invoice = mysqli_query($conn, $sql_check_invoice);
@@ -79,16 +82,33 @@ if ($result->num_rows > 0) {
       if (mysqli_num_rows($sql_check_invoice) > 0) {
           // Nếu có sản phẩm liên kết thì không cho phép xóa
           echo '<script>
-                  alert("This product cannot be removed because there is already a linked order!");
-                  window.location.href="?mpage=manageProduct";
-                </script>';
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "This product cannot be removed because there is already a linked order!",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#3085d6"
+          }).then(function() {
+            window.location.href="?mpage=manageProduct";
+          });
+          </script>';
       } else {
           // Nếu không có sản phẩm liên kết thì tiến hành xóa category
           $sql_delete = "DELETE FROM product WHERE id=?";
           $stmt = mysqli_prepare($conn, $sql_delete);
           mysqli_stmt_bind_param($stmt, "i", $id);
           mysqli_stmt_execute($stmt);
-          echo '<meta http-equiv="refresh" content="0;URL=?page=manage&mpage=manageProduct"/>';
+          echo '<script>';
+            echo 'Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    text: "Product has been deleted successfully!",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#3085d6"
+                  }).then(function() {
+                      window.location.href="?page=manage&mpage=manageProduct";
+                  });';
+            echo '</script>';
       }
     }
   } 

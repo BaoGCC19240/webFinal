@@ -37,7 +37,7 @@ input[type="password"] {
 
 button[type="submit"] {
     display:block;
-	background-color: #4CAF50;
+	background-color: #00a4e0ba;
 	color: white;
 	padding: 10px;
 	border: none;
@@ -49,9 +49,11 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-	background-color: #3e8e41;
+	background-color: #00a4e0ba;
 }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
 <body>
 	<div class="container">
 		<h2>Change Password</h2>
@@ -97,14 +99,23 @@ button[type="submit"]:hover {
                 mysqli_stmt_bind_param($stmt, "ss", $newPass, $us);
                 mysqli_stmt_execute($stmt);
                 
-                echo '<script>alert("Password changed successfully."); window.location="index.php";</script>';
+                echo '<script>
+        Swal.fire({
+            icon: "success",
+            title: "Password changed successfully.",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {
+            window.location = "index.php";
+        });
+    </script>';
             } else {
                 // New password and confirm password do not match
-                echo '<script>alert("New password and confirm password do not match.");</script>';
+                echo '<script>Swal.fire("Error", "New password and confirm password do not match.", "error");</script>';
             }
         } else {
             // Current password is incorrect
-            echo '<script>alert("Current password is incorrect. Please try again.");</script>';
+            echo '<script>Swal.fire("Error", "Current password is incorrect. Please try again.", "error");</script>';
         }
     }
 ?>

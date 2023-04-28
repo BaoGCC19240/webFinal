@@ -45,13 +45,18 @@
 			if (mysqli_num_rows($result) > 0) {
 			    // Hiển thị dữ liệu lấy được từ cơ sở dữ liệu
 			    while($row = mysqli_fetch_assoc($result)) {
-			        echo "<tr>";
-			        echo "<td>" . $row['id'] . "</td>";
-			        echo "<td>" . stripslashes($row['name']) . "</td>";
-			        echo "<td>" . stripslashes($row['description']) . "</td>";
-			        echo "<td><a href='?mpage=updateCategory&&id=" . $row['id'] . "'>Update</a></td>";
-			        echo "<td><a href='?mpage=manageCategory&&function=del&&id=" . $row['id'] . "' onclick='return deleteConfirm()'>Delete</a></td>";
-			        echo "</tr>";
+			        ?>
+        <tr>
+            <td><?php echo $row['id']; ?></td>
+            <td><?php echo stripslashes($row['name']); ?></td>
+            <td><?php echo stripslashes($row['description']); ?></td>
+            <td><a href='?mpage=updateCategory&&id=<?php echo $row['id']; ?>'>Update</a></td>
+            <td><a href="?mpage=manageCategory&amp;function=del&amp;id=<?php echo $row['id']; ?>" onclick="event.preventDefault(); deleteConfirm(this)">Delete</a>
+
+		</td>
+
+        </tr>
+        <?php
 			    }
 			} else {
 			    echo "<tr><td colspan='5'>Not added</td></tr>";
@@ -71,14 +76,28 @@
 
             if (mysqli_num_rows($result_check_product) > 0) {
                 // Nếu có sản phẩm liên kết thì không cho phép xóa
-                echo '<script>
-                        alert("This category cannot be deleted because there are already associated products!");
-                        window.location.href="?mpage=manageCategory";
-                      </script>';
+                echo "<script>
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'This category cannot be deleted because there are already associated products!'
+				}).then(() => {
+					window.location.href = '?mpage=manageCategory';
+				});
+			</script>";
             } else {
                 // Nếu không có sản phẩm liên kết thì tiến hành xóa category
                 mysqli_query($conn,"DELETE FROM ProductCategory WHERE id='$id'");
-                echo '<meta http-equiv="refresh" content="0;URL=?mpage=manageCategory"/>';
+                echo "<script>
+				Swal.fire({
+					title: 'Category deleted!',
+					text: 'The category has been deleted successfully.',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				}).then(function() {
+					window.location.href = '?mpage=manageCategory';
+				});
+			</script>";
             }
         }
     } 

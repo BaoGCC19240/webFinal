@@ -2,7 +2,7 @@
     .container {
   margin: 20px auto;
   max-width: 500px;
-  background-color: #8ccdd9;
+  background-color: #d7f6ff;
   border-radius:20px;
 }
 
@@ -78,10 +78,20 @@ if(isset($_POST['update'])) {
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "sssi", $email, $address, $phone, $id);
     if(mysqli_stmt_execute($stmt)) {
-        // update successful, redirect to user profile page
-        echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
-        exit();
-    } else {
+    // update successful, show success message using SweetAlert and redirect to user profile page
+    echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+    echo '<script>
+        swal({
+            title: "Update successful!",
+            text: "Your information has been updated successfully.",
+            icon: "success",
+            button: "OK",
+        }).then(() => {
+            window.location.href = "index.php";
+        });
+    </script>';
+    exit();
+} else {
         // update failed, display error message
         echo "Error updating user information: " . mysqli_error($conn);
     }

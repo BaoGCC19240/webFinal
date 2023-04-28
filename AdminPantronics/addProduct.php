@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>Add new product</title>
-
 </head>
 <?php
 // Kết nối tới cơ sở dữ liệu
@@ -13,9 +12,18 @@ $sql = "SELECT id, name FROM ProductCategory";
 $result = mysqli_query($conn, $sql);
 
 // Tạo các tùy chọn cho thẻ select
-$options = '<option value="">--Select category--</option>';
+$category = '<option value="">--Select category--</option>';
 while ($row = mysqli_fetch_assoc($result)) {
-    $options .= '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+    $category .= '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+}
+//truy vấn danh sách supplier
+$sup_sql = "SELECT id, name FROM supplier";
+$sup_result = mysqli_query($conn, $sup_sql);
+
+// Tạo các tùy chọn cho thẻ select
+$supplier = '<option value="">--Select Supplier--</option>';
+while ($sup_row = mysqli_fetch_assoc($sup_result)) {
+    $supplier .= '<option value="' . $sup_row['id'] . '">' . $sup_row['name'] . '</option>';
 }
 ?>
 <body>
@@ -26,14 +34,18 @@ while ($row = mysqli_fetch_assoc($result)) {
 		<label for="description">Description:</label><br>
 		<textarea id="description" name="description" required></textarea><br>
 		<label for="price">Price:</label><br>
-		<input type="number" id="price" name="price" step="0.01" min="0" required><br>
+		<input type="number" id="price" name="price" min="0" required><br>
 		<label for="image_url">Picture URL:</label><br>
 		<input type="file" id="images" name="images[]" multiple required>
 		<label for="quantity">Quantity:</label><br>
 		<input type="number" id="quantity" name="quantity" min="0" required><br>
 		<label for="category_id">Category:</label><br>
 		<select id="category" name="category_id" required>
-    	<?php echo $options; ?>
+    	<?php echo $category; ?>
+		</select><br><br>
+		<label for="supplier_id">Supplier:</label><br>
+		<select id="supplier" name="supplier_id" required>
+    	<?php echo $supplier; ?>
 		</select><br><br>
 		<input type="submit" name="addProduct" value="Add Product">
 	</form>
@@ -47,11 +59,11 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$quantity = $_POST['quantity'];
 		$category_id = $_POST['category_id'];
 		$images = $_FILES['images'];
-		
+		$supplier_id = $_POST['supplier_id'];
 		// Lưu sản phẩm vào bảng Product
-		$sql = "INSERT INTO Product (name, description, price, quantity, category_id) VALUES (?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO Product (name, description, price, quantity, category_id,supplier_id) VALUES (?, ?, ?, ?, ?,?)";
 		$stmt = mysqli_prepare($conn, $sql);
-		mysqli_stmt_bind_param($stmt, "ssiii", $name, $description, $price, $quantity, $category_id);
+		mysqli_stmt_bind_param($stmt, "ssiiii", $name, $description, $price, $quantity, $category_id,$supplier_id);
 		$result = mysqli_stmt_execute($stmt);
 		
 		if ($result) {
@@ -71,12 +83,20 @@ while ($row = mysqli_fetch_assoc($result)) {
 			mysqli_stmt_execute($stmt);
 		  }
 		
-		echo '<script>';
-		echo 'alert("Product added successfully");';
-		echo '</script>';
-		echo '<meta http-equiv="refresh" content="0;URL=?page=manage&&mpage=manageProduct"/>';
+		  echo '<script>';
+		  echo 'Swal.fire({';
+		  echo '  icon: "success",';
+		  echo '  title: "Product added successfully",';
+		  echo '  showConfirmButton: false,';
+		  echo '  timer: 1500';
+		  echo '}).then(function() {';
+		  echo '  window.location.href="?page=manage&&mpage=manageProduct";';
+		  echo '});';
+		  echo '</script>';
 		} else {
-		  echo "There are wrong something while add new product";
+			echo '<script>';
+			echo 'swal("Oops...", "There was an error while adding the new product!", "error");';
+			echo '</script>';			
 		}		
 	
 	}

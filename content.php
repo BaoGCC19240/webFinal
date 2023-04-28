@@ -4,7 +4,7 @@
             <img src="./Images/banner3.png" alt="banner 2">
             <img src="./Images/banner2.png" alt="banner 3">
     </div>
-    <h2 style="text-align:center">Featured Products</h2>
+  
     <div class="filter">
     <p>Sort <i class="fa fa-filter" aria-hidden="true"></i></p>
     <button class="filter-btn" data-sort="best-seller">Best-selling product</button>
@@ -12,6 +12,7 @@
     <button class="filter-btn" data-sort="price-descending">Price descending</button>
     <button class="filter-btn" data-sort="price-ascending">Price ascending</button>
   </div>
+  <h2 style="text-align:center">Featured Products</h2>
   <script>
     // Lắng nghe sự kiện click của các nút Sort
 document.querySelectorAll('.filter-btn').forEach(button => {

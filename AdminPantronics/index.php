@@ -1,21 +1,34 @@
+<?php
+session_start();
+if (!isset($_SESSION["us_admin"])) {
+    // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
+    header('Location: loginAdmin.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Admin Panel</title>
 	<link rel="stylesheet" type="text/css" href="styleManage.css">
 	<script src="script.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<div class="mn-wrapper">
 		<nav>
 			<ul>
 				<li><a href="?page=manage&&mpage=manageUser" class="active">User</a></li>
+				<li><a href="?page=manage&&mpage=manageSupplier">Supplier</a></li>
 				<li><a href="?page=manage&&mpage=manageCategory">Category</a></li>
 				<li><a href="?page=manage&&mpage=manageProduct">Product</a></li>
 				<li><a href="?page=manage&&mpage=manageOrder">Order</a></li>
 				<li><a href="?page=manage&&mpage=top_10product">Top 10 best selling products</a></li>
 				<li><a href="?page=manage&&mpage=top_5category">Top 5 best selling product category</a></li>
-				<li><a href="?page=manage&&mpage=rev_statistics">Revenue statistics</a></li>
+				<li><a href="?page=manage&&mpage=supplierReport">Supplier Report</a></li>
+				<li><a href="?page=manage&&mpage=rev_statistics">Order statistics</a></li>
 			</ul>
 		</nav>
 		<div class="mn-content">
@@ -51,8 +64,20 @@
 				if($mpage=='top_10product'){
 					include_once('top_10product.php');
 				}
+				if($mpage=='manageSupplier'){
+					include_once('manageSupplier.php');
+				}
+				if($mpage=='addSupplier'){
+					include_once('addSupplier.php');
+				}
+				if($mpage=='updateSupplier'){
+					include_once('updateSupplier.php');
+				}
 				if($mpage=='top_5category'){
 					include_once('top_5category.php');
+				}
+				if($mpage=='supplierReport'){
+					include_once('supplierReport.php');
 				}
 			}else{
 				include_once('manageUSer.php');

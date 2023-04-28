@@ -18,6 +18,9 @@
 		}
 		}
 	</script>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
 <h1>List Order</h1>
 <table>
     <thead>
@@ -48,7 +51,7 @@
             <th>Status</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="order-table-body">
         <?php
         // Kết nối đến cơ sở dữ liệu
         include_once("connection.php");
@@ -61,7 +64,7 @@
         $where = $filter_date ? " WHERE order_date = '{$filter_date}'" : '';
 
         // Câu truy vấn cơ sở dữ liệu
-        $sql = "SELECT * FROM invoice {$where} ORDER BY id DESC";
+        $sql = "SELECT * FROM invoice {$where} ORDER BY id DESC LIMIT 10";
 
         // Thực hiện truy vấn
         $result = $conn->query($sql);
@@ -117,10 +120,12 @@
             $update_sql = "UPDATE Invoice SET status = '$new_status' WHERE id = $order_id";
             if($conn->query($update_sql)) {
                 // Nếu cập nhật thành công, chuyển hướng trở lại trang danh sách order
-                echo '<meta http-equiv="refresh" content="0"/>';
-                exit();
+                echo '<script>swal.fire("Success", "Order status updated successfully!", "success").then(function() {window.location.href="?mpage=manageOrder";});</script>';
             } else {
-                echo "Có lỗi xảy ra khi cập nhật trạng thái";
+                echo '<script>';
+                echo 'swal.fire("Oops...", "There was an error processing your request. Please try again later.", "error");                ';
+                echo '</script>';
+                
             }
         }
         ?>
@@ -132,4 +137,30 @@ function changeUrl(selectBox) {
   var url = '?page=manage&&mpage=manageOrder&&filter_date=' + encodeURIComponent(value);
   window.location.href = url;
 }
+</script>
+<script>
+// Load the next set of rows when the user scrolls to the bottom of the page
+window.addEventListener('scroll', function() {
+  // Check if the user has scrolled to the bottom of the page
+  if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+    // Make an AJAX request to load the next set of rows
+    const xhr = new XMLHttpRequest();
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterDate = urlParams.get('filter_date');
+    const currentPage = document.querySelectorAll('#order-table-body tr').length;
+    xhr.open('GET', `load_more_orders.php?filter_date=${filterDate}&page=${currentPage}`);
+
+    // Update the table with the new rows
+    xhr.onload = function() {
+      const newRows = xhr.responseText;
+
+      if (newRows) {
+        const orderTableBody = document.getElementById('order-table-body');
+        orderTableBody.innerHTML += newRows;
+      }
+    };
+
+    xhr.send();
+  }
+});
 </script>

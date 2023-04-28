@@ -16,16 +16,23 @@
 		$name = mysqli_real_escape_string($conn, $_POST["name"]);
 		$description = mysqli_real_escape_string($conn, $_POST["description"]);
 		if (empty($name) || empty($description)) {
-			echo "Error: Please enter all required fields";
+			echo '<script>swal("Error", "Please enter all required fields", "error");</script>';
+
 		} else {
 			// Sử dụng Prepared Statements để thêm mới danh mục sản phẩm
 			$stmt = $conn->prepare("INSERT INTO ProductCategory (name, description) VALUES (?, ?)");
 			$stmt->bind_param("ss", $name, $description);
 			if ($stmt->execute()) {
-				echo '<script>';
-				echo 'setTimeout(function() { alert("Product category added successfully"); }, 2000);';
-				echo '</script>';
-				echo '<meta http-equiv="refresh" content="0;URL=?page=manage&&mpage=manageCategory"/>';
+				echo '<script>
+        Swal.fire({
+            icon: "success",
+            title: "Product category added successfully",
+            showConfirmButton: false,
+            timer: 2000
+        }).then(function () {
+            window.location.href = "?page=manage&&mpage=manageCategory";
+        });
+    </script>';
 			} else {
 				echo "Error: " . $stmt->error;
 			}

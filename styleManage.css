@@ -139,9 +139,8 @@ select{
 .product-container {
 	display: flex;
 	flex-wrap: nowrap;
-	width: 80%;
+	width: 60%;
 	margin: 20px auto;
-	border-radius: 20px;
 	background-color: white;
 	border: 1px none #ccc;
 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
@@ -238,7 +237,7 @@ input[type=number] {
   
   /* Thiết kế cho nút "Mua ngay" */
   button:nth-child(2) {
-	background-color: #28a745; /* Màu nền của nút */
+	background-color: #2196F3; /* Màu nền của nút */
   }
   
   /* Hiệu ứng hover cho nút */

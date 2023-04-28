@@ -1,4 +1,7 @@
 <link rel="stylesheet" type="text/css" href="styleManage.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
+
 	<div class="product-container">
 	<div class="product-images">
     <div class="preview-image-container">
@@ -64,6 +67,11 @@ function addToCart(event, id) {
   } else {
     cart[cartIndex].quantity += product.quantity;
   }
+  Swal.fire({
+          icon: "success",
+          title: "Product added to cart",
+          showConfirmButton: false,
+          timer: 2000})
   localStorage.setItem('cart', JSON.stringify(cart));
   totalCart();
   renderCart();

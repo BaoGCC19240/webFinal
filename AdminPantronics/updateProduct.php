@@ -17,6 +17,7 @@ if (mysqli_num_rows($result) > 0) {
 	$price = mysqli_real_escape_string($conn, $row['price']);
 	$quantity = mysqli_real_escape_string($conn, $row['quantity']);
 	$category_id = mysqli_real_escape_string($conn, $row['category_id']);
+  $supplier_id = mysqli_real_escape_string($conn, $row['supplier_id']);
 } else {
 	echo "Product does not exist.";
 	exit();
@@ -32,6 +33,17 @@ while ($row = mysqli_fetch_assoc($result)) {
 	$selected = ($row['id'] == $category_id) ? 'selected' : '';
 	$options .= '<option value="' . $row['id'] . '" ' . $selected . '>' . mysqli_real_escape_string($conn, $row['name']) . '</option>';
 }
+
+$sup_sql = "SELECT id, name FROM supplier";
+$sup_result = mysqli_query($conn, $sup_sql);
+
+// Tạo các tùy chọn cho thẻ select
+$supplier = '<option value="">--Select supplier--</option>';
+while ($sup_row = mysqli_fetch_assoc($sup_result)) {
+	$sup_selected = ($sup_row['id'] == $supplier_id) ? 'selected' : '';
+	$supplier .= '<option value="' . $sup_row['id'] . '" ' . $sup_selected . '>' . mysqli_real_escape_string($conn, $sup_row['name']) . '</option>';
+}
+
 $sql = "SELECT id, image_url FROM ProductImage WHERE product_id = '$product_id'";
 $result = mysqli_query($conn, $sql);
 
@@ -59,12 +71,16 @@ while ($rowI = mysqli_fetch_assoc($result)) {
     <label for="description">Description:</label><br>
     <textarea id="description" name="description" required><?php echo stripslashes($description); ?></textarea><br>
     <label for="price">Price:</label><br>
-    <input type="number" id="price" name="price" step="0.01" min="0" value="<?php echo stripslashes($price); ?>" required><br>
+    <input type="number" id="price" name="price" min="0" value="<?php echo stripslashes($price); ?>" required><br>
     <label for="quantity">Quantity:</label><br>
     <input type="number" id="quantity" name="quantity" min="0" value="<?php echo stripslashes($quantity); ?>" required><br>
     <label for="category_id">Category:</label><br>
     <select id="category" name="category_id" required>
       <?php echo stripslashes($options); ?>
+    </select><br><br>
+    <label for="supplier_id">Supplier:</label><br>
+    <select id="supplier" name="supplier_id" required>
+      <?php echo stripslashes($supplier); ?>
     </select><br><br>
     <label>Image:</label><br>
 <?php echo stripslashes($checkboxes); ?>
@@ -84,6 +100,7 @@ if (isset($_POST['updateProduct'])) {
     $price = mysqli_real_escape_string($conn, $_POST['price']);
     $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
     $category_id = mysqli_real_escape_string($conn, $_POST['category_id']);
+    $supplier_id = mysqli_real_escape_string($conn, $_POST['supplier_id']);
   
     // Xử lý xóa các hình ảnh được chọn
     if (isset($_POST['delete_images'])) {
@@ -105,7 +122,7 @@ if (isset($_POST['updateProduct'])) {
     }
   
     // Thực hiện truy vấn để cập nhật sản phẩm
-    $sql = "UPDATE Product SET name='$name', description='$description', price='$price', quantity='$quantity', category_id='$category_id' WHERE id='$product_id'";
+    $sql = "UPDATE Product SET name='$name', description='$description', price='$price', quantity='$quantity', category_id='$category_id', supplier_ID='$supplier_id' WHERE id='$product_id'";
     if (mysqli_query($conn, $sql)) {
         if (isset($_FILES['images'])) {
             $fileCount = count($_FILES['images']['name']);
@@ -125,8 +142,17 @@ if (isset($_POST['updateProduct'])) {
                 mysqli_query($conn, $sql);
               }
             }
-            echo '<h3 class="notice">Update successful</h3>';
-            echo '<meta http-equiv="refresh" content="1;url=?page=manage&mpage=manageProduct"/>';
+            echo '<script>
+  Swal.fire({
+      title: "Success!",
+      text: "The product has been updated.",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 2000
+  }).then(function() {
+      window.location.href = "?mpage=manageProduct";
+  });
+</script>';
         }
     } else {
         echo "Error: " . mysqli_error($conn);

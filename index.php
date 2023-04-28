@@ -16,6 +16,7 @@ include_once("connection.php");
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
+
 <?php
 include_once('connection.php');
 $sq = 'select id,name from productcategory';
@@ -27,7 +28,6 @@ while ($row = mysqli_fetch_assoc($res)) {
 ?>
 
 <body>
-
 <header>
 
     <div class="logo">
@@ -212,8 +212,8 @@ while ($row = mysqli_fetch_assoc($res)) {
     <div class="footer-container">
       <div class="footer-section">
         <h3>About Us</h3>
-        <p>Pantronics is a leading technology company that specializes in the development and sale of innovative
-          electronic devices and solutions for businesses and individuals.</p>
+        <p style="text-align:justify;">Pantronics is a leading technology company sale of innovative
+          electronic devices</p>
       </div>
       <div class="footer-section">
         <h3>Contact Us</h3>
@@ -232,9 +232,6 @@ while ($row = mysqli_fetch_assoc($res)) {
           <li><a href="#"><i class="fa fa-instagram"></i>Instagram</a></li>
         </ul>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2023 Pantronics. All rights reserved.</p>
     </div>
   </footer>
 </html>

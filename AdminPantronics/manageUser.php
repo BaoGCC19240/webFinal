@@ -31,6 +31,49 @@
 			padding: 8px;
 			border-bottom: 1px solid #ddd;
 		}
+		.searchBar{
+	position: relative;
+	height: 60px;
+  }
+  .search-container {
+	display: flex;
+	justify-content: center;
+	padding-top: 10px;
+  }
+  .search-container .searchForm{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+  }
+  
+  .search-container input[type=text] {
+	padding: 10px;
+	margin-right: 5px;
+	border: 1px solid black;
+	font-size: 15px;
+	width: 50%;
+	border-radius:5px ;
+  }
+  
+  .search-container button {
+	border: none;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	cursor: pointer;
+  }
+  
+  .search-container button:hover {
+	background: #0b7dda;
+  }
+
+  /* notice no result search*/
+  .not-found{
+	display: none;
+	text-align: center;
+	margin: 10px;
+	color:darkgrey
+  }
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -90,6 +133,12 @@
 		}
 	</script>
 	<h1>User Management</h1>
+	<div class="searchBar">
+    <div class="search-container">
+        <input type="text" placeholder="Search for . . ." name="search" onkeyup="searchUsers(this.value)">
+        <button type="submit" name="search-btn"><i class="fa fa-search"></i></button>
+    </div>
+</div>
 	<table id="user-table">
 		<tr>
 			<th>ID</th>
@@ -122,4 +171,16 @@
         
 	</table>
 </body>
+<script>
+	function searchUsers(query) {
+    $.ajax({
+        method: "GET",
+        url: "search_users.php",
+        data: { query: query }
+    }).done(function(data) {
+        // Replace table with filtered user data
+        $("table#user-table").html(data);
+    });
+}
+	</script>
 </html>

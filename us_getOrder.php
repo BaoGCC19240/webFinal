@@ -61,7 +61,7 @@ echo $orderListHtml;
     }
     
     th {
-        background-color: #4CAF50;
+        background-color: #61caf3;
         color: white;
     }
     

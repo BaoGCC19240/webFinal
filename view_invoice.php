@@ -93,7 +93,7 @@ $product_result = $conn->query($product_sql);
     }
     
     th {
-        background-color: #4CAF50;
+        background-color: #61caf3;
         color: white;
     }
     

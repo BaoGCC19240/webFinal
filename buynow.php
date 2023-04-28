@@ -1,5 +1,7 @@
 <head>
   <link rel="stylesheet" type="text/css" href="buynow.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
 </head>
 <?php
 include_once('connection.php');
@@ -206,8 +208,16 @@ if (isset($_POST['placeOrder'])) {
           $stmt = mysqli_prepare($conn, "UPDATE product SET quantity = ? WHERE id = ?");
           mysqli_stmt_bind_param($stmt, "ii", $quantity_in_stock, $id);
           mysqli_stmt_execute($stmt);
-          echo "<script>alert('Your order has been placed successfully!');</script>";
-          echo "<script>window.location = 'index.php';</script>";
+          echo '<script>
+    swal({
+        title: "Success!",
+        text: "Your order has been placed successfully!",
+        type: "success",
+        confirmButtonText: "OK"
+    }).then(function() {
+        window.location = "index.php";
+    });
+</script>';
         } else {
           echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
         }
@@ -333,14 +343,40 @@ if(isset($_GET['vnp_ResponseCode'])&&$_GET['vnp_ResponseCode']==00){
 unset($_SESSION['email']);
 unset($_SESSION['address']);
 unset($_SESSION['phone']);
-  echo "<script>alert('Your order has been placed successfully!');</script>";
-  echo "<script>window.location = 'index.php';</script>";
+echo '<script>
+swal({
+    title: "Success!",
+    text: "Your order has been placed successfully!",
+    type: "success",
+    confirmButtonText: "OK"
+}).then(function() {
+    window.location = "index.php";
+});
+</script>';
 }
 
-if(isset($_GET['vnp_ResponseCode'])&&$_GET['vnp_ResponseCode']==24){
+else if(isset($_GET['vnp_ResponseCode'])&&$_GET['vnp_ResponseCode']==24){
   $conn->rollback();
-  echo '<script>alert("Payment falied !!!")</script>';
+  echo '<script>
+swal({
+  title: "Payment failed",
+  text: "Please try again later",
+  icon: "error",
+  button: "OK",
+}).then(function() {
+});
+</script>';
 }
-
+else{
+  echo '<script>
+swal({
+  title: "Payment failed",
+  text: "Please try again later",
+  icon: "error",
+  button: "OK",
+}).then(function() {
+});
+</script>';
+}
 ?>
 <script src="script.js"></script>

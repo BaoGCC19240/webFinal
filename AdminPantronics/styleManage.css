@@ -1,5 +1,7 @@
 * {
 	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 .hidden{
@@ -54,7 +56,7 @@ table, th, td {
 }
 th, td {
   padding: 5px;
-  text-align: left;  
+  text-align: center;  
 
 }
 th{

@@ -1,4 +1,6 @@
-<div class="container">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
+ <div class="container">
   <h1>Detail Cart</h1>
   <table>
     <thead>
@@ -104,7 +106,10 @@ if (isset($_POST["checkout-btn"])) {
   } else {
     // Kết nối đến cơ sở dữ liệu
     include_once('connection.php');
-    
+    if(!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+      echo "<script>swal.fire('Empty Cart', 'Your cart is currently empty', 'warning').then(() => {window.location.href = 'index.php'});</script>";
+      exit();
+  }
     //kiểm tra số lượng
     foreach ($_SESSION['cart'] as $product) {
       $product_id = $product['id'];
@@ -121,7 +126,14 @@ if (isset($_POST["checkout-btn"])) {
       if ($quantity > $product_quantity) {
         // Số lượng sản phẩm trong giỏ hàng vượt quá số lượng sản phẩm hiện có trong kho
         // In thông báo lỗi và dừng đơn hàng
-        echo "<script>alert('Sorry, there are only $product_quantity items in stock.');</script>";
+        echo "<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Sorry, there are only $product_quantity items in stock.',
+    });
+</script>";
+
         exit;
       }
       $total += $fee;
@@ -176,8 +188,16 @@ if (isset($_POST["checkout-btn"])) {
         localStorage.setItem('cart', JSON.stringify(cart));
       </script>
       <?php
-      echo "<script>alert('Your order has been placed successfully!');</script>";
-      echo '<meta http-equiv="refresh" content="0;url=?page=index"/>';
+      echo '<script>
+      swal({
+          title: "Success!",
+          text: "Your order has been placed successfully!",
+          type: "success",
+          confirmButtonText: "OK"
+      }).then(function() {
+          window.location = "index.php";
+      });
+  </script>';
     }
     if (isset($_POST['payment_method']) && $_POST['payment_method'] == 'vnpay') {
       date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -280,12 +300,29 @@ if (isset($_POST["checkout-btn"])) {
     localStorage.setItem('cart', JSON.stringify(cart));
   </script>
   <?php
-  echo "<script>alert('Your order has been placed successfully!');</script>";
-  echo '<meta http-equiv="refresh" content="0;url=?page=index"/>';
+  echo '<script>
+  swal({
+      title: "Success!",
+      text: "Your order has been placed successfully!",
+      type: "success",
+      confirmButtonText: "OK"
+  }).then(function() {
+      window.location = "index.php";
+  });
+</script>';
 }
 
     if(isset($_GET['vnp_ResponseCode'])&&$_GET['vnp_ResponseCode']==24){
-      echo '<script>alert("Payment falied !!!")</script>';
+      echo '<script>
+swal({
+  title: "Payment failed",
+  text: "Please try again later",
+  icon: "error",
+  button: "OK",
+}).then(function() {
+  window.location = "index.php";
+});
+</script>';
     }
     
   }
